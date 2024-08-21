@@ -222,7 +222,7 @@ export default function EditTicketRM() {
   };
 
   const handleListTicket = () => {
-    window.location.href = "/listticketrmdanmgmt";
+    window.location.href = "/workflowtlfe/listticketrmdanmgmt";
   };
 
   const handleYes = async () => {
@@ -246,7 +246,7 @@ export default function EditTicketRM() {
               'authorization': 'Bearer ' + token
             }
           });
-          window.location.href = "/listticketrmdanmgmt";
+          window.location.href = "/workflowtlfe/listticketrmdanmgmt";
         }
         else {
         }
@@ -288,7 +288,7 @@ export default function EditTicketRM() {
               }
             });
             console.log(result);
-            window.location.href = "/listticketrmdanmgmt";
+            window.location.href = "/workflowtlfe/listticketrmdanmgmt";
           }
           else {
             swal({

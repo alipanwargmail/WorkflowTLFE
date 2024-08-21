@@ -108,13 +108,13 @@ export default function LoginNonNasabah() {
           sessionStorage.setItem('username', response['username']);
 
           if(response['role'] === "ADMIN"){
-            window.location.href = "/listticketadmin";
+            window.location.href = "/workflowtlfe/listticketadmin";
           }
           else if(response['role'] === "RM" || response['role'] === "MGMT"){
-            window.location.href = "/listticketrmdanmgmt";
+            window.location.href = "/workflowtlfe/listticketrmdanmgmt";
           }
           else {
-            window.location.href = "/listticketnonnasabah";
+            window.location.href = "/workflowtlfe/listticketnonnasabah";
           }
         });
     }

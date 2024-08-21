@@ -220,11 +220,11 @@ export default function ViewTicketAdmin() {
   };
 
   const handleListTicket = () => {
-    window.location.href = "/listticketadmin";
+    window.location.href = "/workflowtlfe/listticketadmin";
   };
 
   const handleOk = () => {
-    window.location.href = "/listticketadmin";
+    window.location.href = "/workflowtlfe/listticketadmin";
   };
 
   const handleAuditTrail = async () => {

@@ -101,7 +101,7 @@ export default function CreateTicket() {
   };
 
   const handleListTicket = () => {
-    window.location.href = "/listticketuser";
+    window.location.href = "/workflowtlfe/listticketuser";
   };
 
   const handleAddTicket = async () => {
@@ -111,7 +111,7 @@ export default function CreateTicket() {
     if (x > 0) {
       let tradinglimit = value.replaceAll(',', '').replaceAll('.', '')
       console.log(tradinglimit)
-      if (tradinglimit > 200000000) {      
+      if (tradinglimit >= 200000000) {      
         const { value: accept } = await Swal.fire({
           title: "Terms and conditions",
           html: `<div class="left-align">
@@ -154,16 +154,28 @@ export default function CreateTicket() {
   
             const { data } = response
             console.log(data)
-  
-            await Swal.fire({
-              title: "Trading Limit Submission on Process",
-              html: `The submission process will take up to 3 trading days at the latest`,
-              confirmButtonText: `
-                Back&nbsp;<i class="fa fa-arrow-right"></i>
-              `,
-            });
-            
-            window.location.href = "/listticketuser";  
+            if(data.result === 'OK'){
+              await Swal.fire({
+                title: "Trading Limit Submission on Process",
+                html: `The submission process will take up to 3 trading days at the latest`,
+                confirmButtonText: `
+                  Back&nbsp;<i class="fa fa-arrow-right"></i>
+                `,
+              });
+              
+              window.location.href = "/workflowtlfe/listticketuser";  
+            }
+            else{
+              await Swal.fire({
+                title: "Trading Limit Submission Failed",
+                html: data.message,
+                confirmButtonText: `
+                  Back&nbsp;<i class="fa fa-arrow-right"></i>
+                `,
+              });
+              
+              window.location.href = "/workflowtlfe/listticketuser";  
+            }
           })  
         }
       }
@@ -182,7 +194,7 @@ export default function CreateTicket() {
 
   const handleCancel = () => {
 
-    window.location.href = "/listticketuser";
+    window.location.href = "/workflowtlfe/listticketuser";
   };
 
   const formatNumber = (value) => {

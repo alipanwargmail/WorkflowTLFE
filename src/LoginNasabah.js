@@ -108,7 +108,7 @@ export default function LoginNasabah() {
           sessionStorage.setItem(user+'_custname', response['custname'])
           sessionStorage.setItem(user+'_approvelimit', response['approvelimit'])
 
-            window.location.href = "/listticketuser";
+            window.location.href = "/workflowtlfe/listticketuser";
         });
     }
     else {

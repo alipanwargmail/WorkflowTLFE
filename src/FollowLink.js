@@ -83,7 +83,8 @@ export default function FollowLink() {
                     sessionStorage.setItem('sales_id', response.data['sales_id']);
                     sessionStorage.setItem('editticket_id', response.data['ticketid']);
                     sessionStorage.setItem('refftoken', response.data['refftoken']);                    
-                    window.location.href = "/editticketsales";
+                    window.location.href = "/workflowtlfe/editticketsales";
+                    
                 }
                 else if (response.data['role'] === "HEADEQRETAIL") {
                     sessionStorage.setItem('token', response.data['token']);
@@ -93,7 +94,7 @@ export default function FollowLink() {
                     sessionStorage.setItem('username', response.data['username']);
                     sessionStorage.setItem('editticket_id', response.data['ticketid']);
                     sessionStorage.setItem('refftoken', response.data['refftoken']);
-                    window.location.href = "/editticketnonnasabah";
+                    window.location.href = "/workflowtlfe/editticketnonnasabah";
                 }
                 else if (response.data['role'] === "RM") {
                     sessionStorage.setItem('token', response.data['token']);
@@ -103,7 +104,7 @@ export default function FollowLink() {
                     sessionStorage.setItem('username', response.data['username']);
                     sessionStorage.setItem('editticket_id', response.data['ticketid']);
                     sessionStorage.setItem('refftoken', response.data['refftoken']);
-                    window.location.href = "/editticketrm";
+                    window.location.href = "/workflowtlfe/editticketrm";
                 }
                 else if (response.data['role'] === "MGMT"){
                     sessionStorage.setItem('token', response.data['token']);
@@ -113,7 +114,7 @@ export default function FollowLink() {
                     sessionStorage.setItem('username', response.data['username']);
                     sessionStorage.setItem('editticket_id', response.data['ticketid']);
                     sessionStorage.setItem('refftoken', response.data['refftoken']);
-                    window.location.href = "/editticketmgmt";
+                    window.location.href = "/workflowtlfe/editticketmgmt";
                 }}
 
                 setMessage(response.data.message);

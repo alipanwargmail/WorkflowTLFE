@@ -221,11 +221,11 @@ export default function ViewTicketUser() {
   };
 
   const handleListTicket = () => {
-    window.location.href = "/listticketuser";
+    window.location.href = "/workflowtlfe/listticketuser";
   };
 
   const handleOk = () => {
-    window.location.href = "/listticketuser";
+    window.location.href = "/workflowtlfe/listticketuser";
   };
 
   const handleAuditTrail = async () => {

@@ -2,6 +2,7 @@
   "name": "reactbasiclogin",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/workflowtlfe/",
   "dependencies": {
     "@devexpress/dx-react-chart": "^4.0.5",
     "@devexpress/dx-react-chart-material-ui": "^4.0.5",

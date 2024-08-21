@@ -212,7 +212,7 @@ export default function EditTicketSales() {
   };
 
   const handleListTicket = () => {
-    window.location.href = "/listticketsales";
+    window.location.href = "/workflowtlfe/listticketsales";
   };
 
   const handleApprove = async () => {
@@ -234,7 +234,7 @@ export default function EditTicketSales() {
               'authorization': 'Bearer ' + token
             }
           });
-          window.location.href = "/listticketsales";
+          window.location.href = "/workflowtlfe/listticketsales";
         }
         else {
         }
@@ -273,7 +273,7 @@ export default function EditTicketSales() {
               }
             });
             console.log(result);
-            window.location.href = "/listticketsales";
+            window.location.href = "/workflowtlfe/listticketsales";
           }
           else {
             swal({

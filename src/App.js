@@ -23,7 +23,7 @@ import FollowLink from './FollowLink';
 function App() {
 
   return (
-    <div className="wrapper">
+    <div className="wrapper">      
         <Routes>
           <Route exac path="/" element={<LoginNasabah />}></Route>
           <Route exac path="/login" element={<LoginNonNasabah />}></Route>

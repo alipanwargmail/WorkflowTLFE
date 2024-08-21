@@ -110,7 +110,7 @@ export default function LoginSales() {
           sessionStorage.setItem('sales_id', response['sales_id']);
 
           
-            window.location.href = "/listticketsales";
+            window.location.href = "/workflowtlfe/listticketsales";
         });
     }
     else {

@@ -211,7 +211,7 @@ export default function EditTicketNonNasabah() {
   };
 
   const handleListTicket = () => {
-    window.location.href = "/listticketnonnasabah";
+    window.location.href = "/workflowtlfe/listticketnonnasabah";
   };
 
   const handleApprove = async () => {
@@ -233,7 +233,7 @@ export default function EditTicketNonNasabah() {
               'authorization': 'Bearer ' + token
             }
           });
-          window.location.href = "/listticketnonnasabah";
+          window.location.href = "/workflowtlfe/listticketnonnasabah";
         }
         else {
         }
