@@ -136,7 +136,7 @@ export default function LoginNasabah() {
               fullWidth
               id="userid"
               name="userid"
-              label="Userid"
+              label="Userid DX"
               onChange={e => setUser(e.target.value)}
             />
             <TextField
@@ -144,8 +144,8 @@ export default function LoginNasabah() {
               margin="normal"
               required
               fullWidth
-              id="Password" s
-              label='Password'
+              id="Password" 
+              label='Password DXTrade'
               type={showPassword ? "text" : "password"} // <-- This is where the magic happens
               onChange={e => setPassword(e.target.value)}
               InputProps={{ // <-- This is where the toggle button is added.
