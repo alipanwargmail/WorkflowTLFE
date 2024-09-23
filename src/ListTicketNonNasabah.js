@@ -92,6 +92,10 @@ export default function ListTicketNonNasabah() {
     const handleListTicket = () => {
         window.location.href = "/workflowtlfe/listticketnonnasabah";
     };
+    const handleHistoryTicket = () => {
+        sessionStorage.setItem('user_id', user_id);
+        window.location.href = "/workflowtlfe/historyticketnonnasabah";
+    };
     const numberFormatter = new Intl.NumberFormat('en-US', {
         style: 'decimal',
         minimumFractionDigits: 2,
@@ -147,14 +151,16 @@ export default function ListTicketNonNasabah() {
                     <div>
                         <IconButton onClick={handleMenu} color="inherit">
                             <Avatar src={user.avatar} />
-                        </IconButton>                        
+                        </IconButton>        
+                        <Button color="inherit" onClick={handleHistoryTicket}>History Ticket</Button>                
                         <Button color="inherit" onClick={handleListTicket}>List Ticket</Button>
                         <Button color="inherit" onClick={handleLogout}>Logout</Button>
                         <Menu id="menu-appbar"
                             anchorEl={anchorEl}
                             open={open}
                             onClose={handleClose}
-                        >                            
+                        >                     
+                            <MenuItem onClick={handleHistoryTicket}>History Ticket</MenuItem>       
                             <MenuItem onClick={handleListTicket}>List Ticket</MenuItem>
                             <MenuItem onClick={handleLogout}>Log Out</MenuItem>
                         </Menu>
@@ -261,7 +267,7 @@ export default function ListTicketNonNasabah() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {stableSort(rows, getComparator(order, orderBy)).map((row, index) => (
+                    {(rows || stableSort(rows, getComparator(order, orderBy))).map((row, index) => (
                             <TableRow key={row.id}>
                                 <TableCell>{row.id}</TableCell>
                                 <TableCell>{row.user_id}</TableCell>

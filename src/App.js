@@ -19,6 +19,14 @@ import EditTicketMGMT from './EditTicketMGMT';
 import LoginSales from './LoginSales';
 import ListTicketSales from './ListTicketSales';
 import FollowLink from './FollowLink';
+import HistoryTicketSales from './HistoryTicketSales';
+import ViewHistoryTicketSales from './ViewHistoryTicketSales';
+import HistoryTicketNonNasabah from './HistoryTicketNonNasabah';
+import ViewHistoryTicketNonNasabah from './ViewHistoryTicketNonNasabah';
+import HistoryTicketRm from './HistoryTicketRm';
+import ViewHistoryTicketRm from './ViewHistoryTicketRm';
+import HistoryTicketMgmt from './HistoryTicketMgmt';
+import ViewHistoryTicketMgmt from './ViewHistoryTicketMgmt';
 
 function App() {
 
@@ -42,6 +50,14 @@ function App() {
           <Route exac path="/viewticketadmin" element={<ViewTicketAdmin />}></Route>
           <Route exac path="/testchart" element={<TestChart />}></Route>
           <Route exac path="/followlink/:token" element={<FollowLink />}></Route>
+          <Route exac path="/historyticketsales" element={<HistoryTicketSales />}></Route>
+          <Route exac path="/viewhistoryticketsales" element={<ViewHistoryTicketSales />}></Route>
+          <Route exac path="/historyticketnonnasabah" element={<HistoryTicketNonNasabah />}></Route>
+          <Route exac path="/viewhistoryticketnonnasabah" element={<ViewHistoryTicketNonNasabah />}></Route>
+          <Route exac path="/historyticketrm" element={<HistoryTicketRm />}></Route>
+          <Route exac path="/viewhistoryticketrm" element={<ViewHistoryTicketRm />}></Route>
+          <Route exac path="/historyticketmgmt" element={<HistoryTicketMgmt />}></Route>
+          <Route exac path="/viewhistoryticketmgmt" element={<ViewHistoryTicketMgmt />}></Route>
         </Routes>
     </div>
   );

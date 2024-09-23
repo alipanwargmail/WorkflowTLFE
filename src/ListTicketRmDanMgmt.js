@@ -80,7 +80,17 @@ export default function ListTicketRmDanMgmt() {
             window.location.href = "/workflowtlfe/editticketmgmt";
         }
     }
-    
+
+    const handleHistoryTicket = () => {
+        sessionStorage.setItem('user_id', user_id);
+        if(role === "RM"){
+            window.location.href = "/workflowtlfe/historyticketrm";
+        }
+        else{
+            window.location.href = "/workflowtlfe/historyticketmgmt";
+        }
+    };
+
     function handleEditTicketUser(id) {
         
         swal({
@@ -190,14 +200,16 @@ export default function ListTicketRmDanMgmt() {
                     <div>
                         <IconButton onClick={handleMenu} color="inherit">
                             <Avatar src={user.avatar} />
-                        </IconButton>                        
+                        </IconButton> 
+                        <Button color="inherit" onClick={handleHistoryTicket}>History Ticket</Button>                         
                         <Button color="inherit" onClick={handleListTicket}>List Ticket</Button>
                         <Button color="inherit" onClick={handleLogout}>Logout</Button>
                         <Menu id="menu-appbar"
                             anchorEl={anchorEl}
                             open={open}
                             onClose={handleClose}
-                        >                            
+                        >     
+                        <MenuItem onClick={handleHistoryTicket}>History Ticket</MenuItem>                       
                             <MenuItem onClick={handleListTicket}>List Ticket</MenuItem>
                             <MenuItem onClick={handleLogout}>Log Out</MenuItem>
                         </Menu>
@@ -304,7 +316,7 @@ export default function ListTicketRmDanMgmt() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    {stableSort(rows, getComparator(order, orderBy)).map((row, index) => (
+                    {(rows || stableSort(rows, getComparator(order, orderBy))).map((row, index) => (
                             <TableRow key={row.id}>
                                 <TableCell>{row.id}</TableCell>
                                 <TableCell>{row.user_id}</TableCell>
