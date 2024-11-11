@@ -27,13 +27,14 @@ import HistoryTicketRm from './HistoryTicketRm';
 import ViewHistoryTicketRm from './ViewHistoryTicketRm';
 import HistoryTicketMgmt from './HistoryTicketMgmt';
 import ViewHistoryTicketMgmt from './ViewHistoryTicketMgmt';
-
+import ComingSoon
+ from './ComingSoon';
 function App() {
 
   return (
     <div className="wrapper">      
         <Routes>
-          <Route exac path="/" element={<LoginNasabah />}></Route>
+          <Route exac path="/" element={<ComingSoon />}></Route>
           <Route exac path="/login" element={<LoginNonNasabah />}></Route>
           <Route exac path="/saleslogin" element={<LoginSales />}></Route>
           <Route exac path="/createticket" element={<CreateTicket />}></Route>
