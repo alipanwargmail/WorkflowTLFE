@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@material-ui/core/';
 //import TableContainer from '@material-ui/core/TableContainer';
@@ -9,7 +9,6 @@ import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { useEffect } from 'react';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 export default function HistoryTicketSales() {
 
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);    
+    const [anchorEl, setAnchorEl] = useState(null);    
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('id');
     const [rows, setRows] = React.useState([]);
@@ -112,8 +111,13 @@ export default function HistoryTicketSales() {
     };
     
     const descendingComparator = (a, b, orderBy) => {
+
         const aValue = a[orderBy];
         const bValue = b[orderBy];
+      
+        if(orderBy === 'tradinglimit' || orderBy === 'recommended_limit'){
+            return parseInt(bValue, 10)- parseInt(aValue, 10)        
+        }
       
         if (typeof aValue === 'number' && typeof bValue === 'number') {
             console.log('number')
@@ -134,7 +138,10 @@ export default function HistoryTicketSales() {
         ? (a, b) => descendingComparator(a, b, orderBy)
         : (a, b) => -descendingComparator(a, b, orderBy);
     };
-
+    const sortedRows = useMemo(
+        () => rows.slice().sort(getComparator(order, orderBy)),
+        [rows, order, orderBy]
+    );
     return (
         <div>
             <AppBar position="static">
@@ -214,7 +221,7 @@ export default function HistoryTicketSales() {
                                 <TableSortLabel
                                     active={orderBy === 'tradinglimit'}
                                     direction={orderBy === 'tradinglimit' ? order : 'asc'}
-                                    onClick={(event) => handleRequestSort(event, 'ApproveLimit')}
+                                    onClick={(event) => handleRequestSort(event, 'tradinglimit')}
                                 >
                                     Approve Limit
                                 </TableSortLabel>
@@ -261,7 +268,8 @@ export default function HistoryTicketSales() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {(rows || stableSort(rows, getComparator(order, orderBy))).map((row, index) => (
+                        {/* {(rows || stableSort(rows, getComparator(order, orderBy))).map((row, index) => ( */}
+                        {sortedRows.length > 0 && sortedRows.map((row) => (
                             <TableRow key={row.id}>
                                 <TableCell>{row.id}</TableCell>
                                 <TableCell>{row.user_id}</TableCell>

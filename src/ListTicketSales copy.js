@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@material-ui/core/';
 //import TableContainer from '@material-ui/core/TableContainer';
@@ -9,6 +9,7 @@ import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { useEffect } from 'react';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,25 +32,23 @@ const useStyles = makeStyles((theme) => ({
 export default function ListTicketSales() {
 
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = React.useState(null);    
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('id');
     const [rows, setRows] = React.useState([]);
-    const [dummyState, setDummyState] = React.useState(0);
-
-
+    
     const open = Boolean(anchorEl);
     const token = sessionStorage.getItem('token');
 
     const user = sessionStorage.getItem('user_id');
-    const sales_id = sessionStorage.getItem('sales_id');
+    const sales_id = sessionStorage.getItem('sales_id');    
     //console.log(user)
     //console.log(sales_id)
 
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
 
-        axios.get(backendUrl + "/listticketbysales/" + sales_id, {
+        axios.get(backendUrl+"/listticketbysales/"+sales_id, {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
@@ -68,7 +67,7 @@ export default function ListTicketSales() {
         sessionStorage.setItem('editticket_id', id);
         window.location.href = "/workflowtlfe/editticketsales";
     }
-
+    
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -95,63 +94,50 @@ export default function ListTicketSales() {
         style: 'decimal',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-    });
+      });
 
     const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        console.log(property)
-        console.log(order)
-        setOrderBy(property)
-        // forceRender()
-
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    console.log(property)
+    console.log(order)
+    setOrderBy(property);
     };
-    // const stableSort = (array, comparator) => {
-    //     console.log("stableSort")
-    //     const stabilizedThis = array.map((el, index) => [el, index]);
-    //     stabilizedThis.sort((a, b) => {
-    //         const order = comparator(a[0], b[0]);
-    //         if (order !== 0) return order;
-    //         return a[1] - b[1];
-    //     });
-    //     return stabilizedThis.map((el) => el[0]);
-    // };
-
+    const stableSort = (array, comparator) => {
+        const stabilizedThis = array.map((el, index) => [el, index]);
+        stabilizedThis.sort((a, b) => {
+          const order = comparator(a[0], b[0]);
+          if (order !== 0) return order;
+          return a[1] - b[1];
+        });
+        return stabilizedThis.map((el) => el[0]);
+    };
+    
     const descendingComparator = (a, b, orderBy) => {
         const aValue = a[orderBy];
         const bValue = b[orderBy];
-
-        if(orderBy === 'tradinglimit' || orderBy === 'recommended_limit'){
-            return parseInt(bValue, 10)- parseInt(aValue, 10)        
-        }
-
+      
         if (typeof aValue === 'number' && typeof bValue === 'number') {
             console.log('number')
-            return bValue - aValue; // Simple numerical comparison
+          return bValue - aValue; // Simple numerical comparison
         }
-
+      
         if (typeof aValue === 'string' && typeof bValue === 'string') {
             console.log('string')
-            return bValue.localeCompare(aValue); // String comparison
+          return bValue.localeCompare(aValue); // String comparison
         }
-        console.log('other')
+      
         // Handle cases where types might be mixed, though this is uncommon
         return 0;
     };
 
     const getComparator = (order, orderBy) => {
         return order === 'desc'
-            ? (a, b) => descendingComparator(a, b, orderBy)
-            : (a, b) => -descendingComparator(a, b, orderBy);
+        ? (a, b) => descendingComparator(a, b, orderBy)
+        : (a, b) => -descendingComparator(a, b, orderBy);
     };
 
-    const sortedRows = useMemo(
-        () => rows.slice().sort(getComparator(order, orderBy)),
-        [rows, order, orderBy]
-    );
-
     return (
-        // console.log(sortedRows), // Log sortedRows here
         <div>
             <AppBar position="static">
                 <Toolbar>
@@ -161,7 +147,7 @@ export default function ListTicketSales() {
                     <div>
                         <IconButton onClick={handleMenu} color="inherit">
                             <Avatar src={user.avatar} />
-                        </IconButton>
+                        </IconButton>                        
                         <Button color="inherit" onClick={handleHistoryTicket}>History Ticket</Button>
                         <Button color="inherit" onClick={handleListTicket}>List Ticket</Button>
                         <Button color="inherit" onClick={handleCreateTicket}>Create Ticket</Button>
@@ -170,7 +156,7 @@ export default function ListTicketSales() {
                             anchorEl={anchorEl}
                             open={open}
                             onClose={handleClose}
-                        >
+                        >                            
                             <MenuItem onClick={handleHistoryTicket}>History Ticket</MenuItem>
                             <MenuItem onClick={handleListTicket}>List Ticket</MenuItem>
                             <MenuItem onClick={handleLogout}>Log Out</MenuItem>
@@ -198,7 +184,7 @@ export default function ListTicketSales() {
                                     onClick={(event) => handleRequestSort(event, 'user_id')}
                                 >
                                     user_id
-                                </TableSortLabel>
+                                </TableSortLabel>                                
                             </TableCell>
                             <TableCell>
                                 <TableSortLabel
@@ -207,7 +193,7 @@ export default function ListTicketSales() {
                                     onClick={(event) => handleRequestSort(event, 'email')}
                                 >
                                     Email
-                                </TableSortLabel>
+                                </TableSortLabel>                                
                             </TableCell>
                             <TableCell>
                                 <TableSortLabel
@@ -225,13 +211,13 @@ export default function ListTicketSales() {
                                     onClick={(event) => handleRequestSort(event, 'custname')}
                                 >
                                     Custname
-                                </TableSortLabel>
+                                </TableSortLabel>                                
                             </TableCell>
                             <TableCell align="right">
                                 <TableSortLabel
                                     active={orderBy === 'tradinglimit'}
                                     direction={orderBy === 'tradinglimit' ? order : 'asc'}
-                                    onClick={(event) => handleRequestSort(event, 'tradinglimit')}
+                                    onClick={(event) => handleRequestSort(event, 'ApproveLimit')}
                                 >
                                     Approve Limit
                                 </TableSortLabel>
@@ -273,13 +259,13 @@ export default function ListTicketSales() {
                                 </TableSortLabel>
                             </TableCell>
                             <TableCell>
-                                Action
+                                    Action
                             </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {/* {(rows || stableSort(rows, getComparator(order, orderBy))).map((row, index) => ( */}
-                        {sortedRows.length > 0 && sortedRows.map((row) => (
+                    {(rows || stableSort(rows, getComparator(order, orderBy))).map((row, index) => (
+
                             <TableRow key={row.id}>
                                 <TableCell>{row.id}</TableCell>
                                 <TableCell>{row.user_id}</TableCell>
@@ -296,7 +282,7 @@ export default function ListTicketSales() {
                                 </TableCell>
                             </TableRow>
                         ))}
-                    </TableBody>
+                        </TableBody>
                 </Table>
             </TableContainer>
         </div>
