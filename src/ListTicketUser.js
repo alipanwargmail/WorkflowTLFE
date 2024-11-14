@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@material-ui/core/';
-//import TableContainer from '@material-ui/core/TableContainer';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,10 +8,8 @@ import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { useEffect } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,19 +31,19 @@ const useStyles = makeStyles((theme) => ({
 export default function ListTicketUser() {
 
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);    
+    const [anchorEl, setAnchorEl] = useState(null);
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('id');
     const [rows, setRows] = React.useState([]);
     const open = Boolean(anchorEl);
 
     const user_id = sessionStorage.getItem('user_id');
-    const token = sessionStorage.getItem(user_id+'_token');    
+    const token = sessionStorage.getItem(user_id + '_token');
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
     useEffect(() => {
 
-        axios.get(backendUrl+"/listticketbyuser/" + user_id, {
+        axios.get(backendUrl + "/listticketbyuser/" + user_id, {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
@@ -62,45 +59,45 @@ export default function ListTicketUser() {
 
     function handleViewTicketUser(id) {
         console.log(id)
-        sessionStorage.setItem(user_id+'_'+'viewticket_id', id);
+        sessionStorage.setItem(user_id + '_' + 'viewticket_id', id);
         window.location.href = "/workflowtlfe/viewticketuser";
     }
-    
+
     function handleEditTicketUser(id) {
-        
+
         swal({
             title: "Are you sure?",
-            text: "you will cancel ticket number #"+id,
+            text: "you will cancel ticket number #" + id,
             icon: "warning",
             buttons: true,
             dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-              swal("Poof! Your ticket has been deleted!", {
-                icon: "success",
-              });
-              console.log(id)
-              console.log(token)
-              //window.location.href = "/editticketuser";
-              axios.delete(backendUrl+"/tickets/" + id, {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Access-Control-Allow-Origin': '*',
-                      'authorization': 'Bearer ' + token
-                  }
-              }).then(response => {
-      
-                  const { data } = response
-                  console.log(data)                  
-                  window.location.href = "/workflowtlfe/listticketuser";
-      
-              })
-      
-            } else {
-              swal("Your ticket is safe!");
-            }
-          });
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Poof! Your ticket has been deleted!", {
+                        icon: "success",
+                    });
+                    console.log(id)
+                    console.log(token)
+                    //window.location.href = "/editticketuser";
+                    axios.delete(backendUrl + "/tickets/" + id, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'authorization': 'Bearer ' + token
+                        }
+                    }).then(response => {
+
+                        const { data } = response
+                        console.log(data)
+                        window.location.href = "/workflowtlfe/listticketuser";
+
+                    })
+
+                } else {
+                    swal("Your ticket is safe!");
+                }
+            });
     }
 
     const handleMenu = (event) => {
@@ -124,47 +121,45 @@ export default function ListTicketUser() {
         style: 'decimal',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      });
-      const handleRequestSort = (event, property) => {
+    });
+    const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         console.log(property)
         console.log(order)
         setOrderBy(property);
-        };
-        const stableSort = (array, comparator) => {
-            const stabilizedThis = array.map((el, index) => [el, index]);
-            stabilizedThis.sort((a, b) => {
-              const order = comparator(a[0], b[0]);
-              if (order !== 0) return order;
-              return a[1] - b[1];
-            });
-            return stabilizedThis.map((el) => el[0]);
-        };
-        
-        const descendingComparator = (a, b, orderBy) => {
-            const aValue = a[orderBy];
-            const bValue = b[orderBy];
-          
-            if (typeof aValue === 'number' && typeof bValue === 'number') {
-                console.log('number')
-              return bValue - aValue; // Simple numerical comparison
-            }
-          
-            if (typeof aValue === 'string' && typeof bValue === 'string') {
-                console.log('string')
-              return bValue.localeCompare(aValue); // String comparison
-            }
-          
-            // Handle cases where types might be mixed, though this is uncommon
-            return 0;
-        };
-    
-        const getComparator = (order, orderBy) => {
-            return order === 'desc'
+    };
+
+    const descendingComparator = (a, b, orderBy) => {
+        const aValue = a[orderBy];
+        const bValue = b[orderBy];
+
+        if (orderBy === 'tradinglimit' || orderBy === 'recommended_limit') {
+            return parseInt(bValue, 10) - parseInt(aValue, 10)
+        }
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+            console.log('number')
+            return bValue - aValue; // Simple numerical comparison
+        }
+
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+            console.log('string')
+            return bValue.localeCompare(aValue); // String comparison
+        }
+
+        // Handle cases where types might be mixed, though this is uncommon
+        return 0;
+    };
+
+    const getComparator = (order, orderBy) => {
+        return order === 'desc'
             ? (a, b) => descendingComparator(a, b, orderBy)
             : (a, b) => -descendingComparator(a, b, orderBy);
-        };      
+    };
+    const sortedRows = useMemo(
+        () => rows.slice().sort(getComparator(order, orderBy)),
+        [rows, order, orderBy]
+    );
     return (
         <div>
             <AppBar position="static">
@@ -195,7 +190,7 @@ export default function ListTicketUser() {
                 <Table>
                     <TableHead>
                         <TableRow>
-                        <TableCell>
+                            <TableCell>
                                 <TableSortLabel
                                     active={orderBy === 'id'}
                                     direction={orderBy === 'id' ? order : 'asc'}
@@ -211,7 +206,7 @@ export default function ListTicketUser() {
                                     onClick={(event) => handleRequestSort(event, 'user_id')}
                                 >
                                     user_id
-                                </TableSortLabel>                                
+                                </TableSortLabel>
                             </TableCell>
                             <TableCell>
                                 <TableSortLabel
@@ -220,7 +215,7 @@ export default function ListTicketUser() {
                                     onClick={(event) => handleRequestSort(event, 'email')}
                                 >
                                     Email
-                                </TableSortLabel>                                
+                                </TableSortLabel>
                             </TableCell>
                             <TableCell>
                                 <TableSortLabel
@@ -238,13 +233,13 @@ export default function ListTicketUser() {
                                     onClick={(event) => handleRequestSort(event, 'custname')}
                                 >
                                     Custname
-                                </TableSortLabel>                                
+                                </TableSortLabel>
                             </TableCell>
                             <TableCell align="right">
                                 <TableSortLabel
                                     active={orderBy === 'tradinglimit'}
                                     direction={orderBy === 'tradinglimit' ? order : 'asc'}
-                                    onClick={(event) => handleRequestSort(event, 'ApproveLimit')}
+                                    onClick={(event) => handleRequestSort(event, 'tradinglimit')}
                                 >
                                     Approve Limit
                                 </TableSortLabel>
@@ -286,12 +281,13 @@ export default function ListTicketUser() {
                                 </TableSortLabel>
                             </TableCell>
                             <TableCell>
-                                    Action
-                            </TableCell>                            
+                                Action
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    {stableSort(rows, getComparator(order, orderBy)).map((row, index) => (
+                        {/* {stableSort(rows, getComparator(order, orderBy)).map((row, index) => ( */}
+                        {sortedRows.length > 0 && sortedRows.map((row) => (
                             <TableRow key={row.id}>
                                 <TableCell>{row.id}</TableCell>
                                 <TableCell>{row.user_id}</TableCell>
@@ -305,7 +301,7 @@ export default function ListTicketUser() {
                                 <TableCell>{row.created_at}</TableCell>
                                 <TableCell>
                                     <Button color="primary" variant="contained" onClick={() => handleViewTicketUser(row.id)}>View</Button>
-                                    <Button color="secondary" variant="contained" onClick={() => handleEditTicketUser(row.id) }>Cancel</Button>
+                                    <Button color="secondary" variant="contained" onClick={() => handleEditTicketUser(row.id)}>Cancel</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@material-ui/core/';
-//import TableContainer from '@material-ui/core/TableContainer';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -31,23 +30,23 @@ const useStyles = makeStyles((theme) => ({
 export default function HistoryTicketSales() {
 
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null);    
+    const [anchorEl, setAnchorEl] = useState(null);
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('id');
     const [rows, setRows] = React.useState([]);
-    
+
     const open = Boolean(anchorEl);
     const token = sessionStorage.getItem('token');
 
     const user = sessionStorage.getItem('user_id');
-    const sales_id = sessionStorage.getItem('sales_id');    
+    const sales_id = sessionStorage.getItem('sales_id');
     //console.log(user)
     //console.log(sales_id)
 
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
 
-        axios.get(backendUrl+"/salesticketshist/"+user, {
+        axios.get(backendUrl + "/salesticketshist/" + user, {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
@@ -67,7 +66,7 @@ export default function HistoryTicketSales() {
         sessionStorage.setItem('user_id', user);
         window.location.href = "/workflowtlfe/viewhistoryticketsales";
     }
-    
+
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -91,52 +90,43 @@ export default function HistoryTicketSales() {
         style: 'decimal',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      });
+    });
 
     const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    console.log(property)
-    console.log(order)
-    setOrderBy(property);
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        console.log(property)
+        console.log(order)
+        setOrderBy(property);
     };
-    const stableSort = (array, comparator) => {
-        const stabilizedThis = array.map((el, index) => [el, index]);
-        stabilizedThis.sort((a, b) => {
-          const order = comparator(a[0], b[0]);
-          if (order !== 0) return order;
-          return a[1] - b[1];
-        });
-        return stabilizedThis.map((el) => el[0]);
-    };
-    
+
     const descendingComparator = (a, b, orderBy) => {
 
         const aValue = a[orderBy];
         const bValue = b[orderBy];
-      
-        if(orderBy === 'tradinglimit' || orderBy === 'recommended_limit'){
-            return parseInt(bValue, 10)- parseInt(aValue, 10)        
+
+        if (orderBy === 'tradinglimit' || orderBy === 'recommended_limit') {
+            return parseInt(bValue, 10) - parseInt(aValue, 10)
         }
-      
+
         if (typeof aValue === 'number' && typeof bValue === 'number') {
             console.log('number')
-          return bValue - aValue; // Simple numerical comparison
+            return bValue - aValue; // Simple numerical comparison
         }
-      
+
         if (typeof aValue === 'string' && typeof bValue === 'string') {
             console.log('string')
-          return bValue.localeCompare(aValue); // String comparison
+            return bValue.localeCompare(aValue); // String comparison
         }
-      
+
         // Handle cases where types might be mixed, though this is uncommon
         return 0;
     };
 
     const getComparator = (order, orderBy) => {
         return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
+            ? (a, b) => descendingComparator(a, b, orderBy)
+            : (a, b) => -descendingComparator(a, b, orderBy);
     };
     const sortedRows = useMemo(
         () => rows.slice().sort(getComparator(order, orderBy)),
@@ -152,15 +142,15 @@ export default function HistoryTicketSales() {
                     <div>
                         <IconButton onClick={handleMenu} color="inherit">
                             <Avatar src={user.avatar} />
-                        </IconButton>                        
-                        <Button color="inherit" onClick={handleHistoryTicket}>History Ticket</Button>                        
+                        </IconButton>
+                        <Button color="inherit" onClick={handleHistoryTicket}>History Ticket</Button>
                         <Button color="inherit" onClick={handleListTicket}>List Ticket</Button>
                         <Button color="inherit" onClick={handleLogout}>Logout</Button>
                         <Menu id="menu-appbar"
                             anchorEl={anchorEl}
                             open={open}
                             onClose={handleClose}
-                        >                            
+                        >
                             <MenuItem onClick={handleHistoryTicket}>History Ticket</MenuItem>
                             <MenuItem onClick={handleListTicket}>List Ticket</MenuItem>
                             <MenuItem onClick={handleLogout}>Log Out</MenuItem>
@@ -188,7 +178,7 @@ export default function HistoryTicketSales() {
                                     onClick={(event) => handleRequestSort(event, 'user_id')}
                                 >
                                     user_id
-                                </TableSortLabel>                                
+                                </TableSortLabel>
                             </TableCell>
                             <TableCell>
                                 <TableSortLabel
@@ -197,7 +187,7 @@ export default function HistoryTicketSales() {
                                     onClick={(event) => handleRequestSort(event, 'email')}
                                 >
                                     Email
-                                </TableSortLabel>                                
+                                </TableSortLabel>
                             </TableCell>
                             <TableCell>
                                 <TableSortLabel
@@ -215,7 +205,7 @@ export default function HistoryTicketSales() {
                                     onClick={(event) => handleRequestSort(event, 'custname')}
                                 >
                                     Custname
-                                </TableSortLabel>                                
+                                </TableSortLabel>
                             </TableCell>
                             <TableCell align="right">
                                 <TableSortLabel
@@ -263,7 +253,7 @@ export default function HistoryTicketSales() {
                                 </TableSortLabel>
                             </TableCell>
                             <TableCell>
-                                    Action
+                                Action
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -286,7 +276,7 @@ export default function HistoryTicketSales() {
                                 </TableCell>
                             </TableRow>
                         ))}
-                        </TableBody>
+                    </TableBody>
                 </Table>
             </TableContainer>
         </div>
